@@ -1,0 +1,100 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 450,
+  "data": {
+    "url": "https://raw.githubusercontent.com/shaunliaw122/datavis2/refs/heads/main/final2.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "fold": ["Energy Emissions", "Industrial Emissions", "Land Use Emissions", "Waste Emissions"],
+      "as": ["Emission Source", "Emissions"]
+    },
+    {
+      "aggregate": [
+        {
+          "op": "average",
+          "field": "Emissions",
+          "as": "avg Emissions"
+        }
+      ],
+      "groupby": ["Emission Source"]
+    },
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [{"field": "avg Emissions", "order": "descending"}]
+    }
+  ],
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "Source_highlight",
+          "select": {"type": "point", "fields": ["Emission Source"]},
+          "bind": "legend"
+        }
+      ],
+      "mark": {"type": "arc", "innerRadius": 35, "stroke": "#fff"},
+      "encoding": {
+        "opacity": {
+          "condition": {"param": "Source_highlight", "value": 0.75},
+          "value": 0.2
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "radiusOffset": 50,
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "text": {
+          "field": "avg Emissions",
+          "type": "quantitative",
+          "format": ".2f"
+        },
+        "opacity": {
+          "condition": {"param": "Source_highlight", "value": 1},
+          "value": 0
+        }
+      }
+    }
+  ],
+  "encoding": {
+    "theta": {"field": "avg Emissions", "type": "quantitative", "stack": true},
+    "radius": {
+      "field": "avg Emissions",
+      "scale": {"type": "sqrt", "zero": true, "rangeMin": 25}
+    },
+    "color": {
+      "field": "Emission Source",
+      "type": "nominal",
+      "title": "Emission Source",
+      "scale": {
+        "domain": [
+          "Energy Emissions",
+          "Industrial Emissions",
+          "Land Use Emissions",
+          "Waste Emissions"
+        ],
+        "range": [
+          "#2a9d8f",  
+          "#e76f51", 
+          "#f4a261",  
+          "#264653"  
+        ]
+      }
+    },
+    "tooltip": [
+      {"field": "Emission Source", "title": "Emission Source"},
+      {
+        "field": "avg Emissions",
+        "title": "Average Emissions (kt)",
+        "format": ".2f"
+      }
+    ]
+  }
+}

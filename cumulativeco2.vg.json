@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stacked area chart showing cumulative CO2 emissions by state over time.",
+  "title": {
+    "text": "Cumulative CO2 Emissions by State Over Time",
+    "fontSize": 14,
+    "anchor": "middle"
+  },
+  "width": 850,
+  "height": 500,
+  "data": {
+    "url": "https://raw.githubusercontent.com/shaunliaw122/datavis2/refs/heads/main/final2.csv",
+    "format": {"type": "csv"}
+  },
+  "params": [
+    {
+      "name": "state_highlight",
+      "select": {"type": "point", "fields": ["State"]},
+      "bind": "legend"
+    }
+  ],
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone"
+  },
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "temporal",
+      "title": "Year"
+    },
+    "y": {
+      "aggregate": "sum",
+      "field": "Emissions",
+      "type": "quantitative",
+      "title": "Total CO2 Emissions (kt)"
+    },
+    "color": {
+      "field": "State",
+      "type": "nominal",
+      "legend": {"title": "State"},
+      "scale": {
+        "range": [
+          "#1f77b4",  
+          "#ff7f0e",  
+          "#2ca02c",  
+          "#d62728",  
+          "#9467bd",  
+          "#8c564b",  
+          "#e377c2",  
+          "#7f7f7f"   
+        ]
+      }
+    },
+    "opacity": {
+      "condition": {"param": "state_highlight", "value": 0.9},
+      "value": 0.2
+    },
+    "tooltip": [
+      {"field": "Year", "type": "temporal", "title": "Year"},
+      {"field": "State", "type": "nominal", "title": "State"},
+      {"field": "Emissions", "type": "quantitative", "title": "CO2 Emissions (kt)"}
+    ]
+  }
+}
