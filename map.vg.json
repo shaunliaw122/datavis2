@@ -1,0 +1,89 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1000,
+  "height": 600,
+  "projection": {
+    "type": "mercator",
+    "scale": 700,
+    "center": [133.7751, -25.2744],
+    "translate": [400, 300]
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/shaunliaw122/datavis2/refs/heads/main/ne_10m_admin_1_states_provinces.json",
+    "format": {
+      "type": "topojson",
+      "feature": "ne_10m_admin_1_states_provinces"
+    }
+  },
+  "transform": [
+    {
+      "filter": {
+        "field": "properties.name",
+        "oneOf": [
+          "Western Australia",
+          "Northern Territory",
+          "South Australia",
+          "Queensland",
+          "New South Wales",
+          "Australian Capital Territory",
+          "Victoria",
+          "Tasmania"
+        ]
+      }
+    }
+  ],
+  "layer": [
+    {
+      "transform": [
+        {
+          "lookup": "properties.postal",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/shaunliaw122/datavis2/refs/heads/main/final2.csv",
+              "format": {"type": "csv"}
+            },
+            "key": "State",
+            "fields": ["Emissions"]
+          }
+        },
+        {
+          "calculate": "datum.Emissions",
+          "as": "CO2 Emissions"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "color": {
+          "field": "CO2 Emissions",
+          "type": "quantitative",
+          "scale": {
+            "domain": [-4, 0, 50, 100, 125],
+            "range": ["#f0f9e8", "#bae4bc", "#7bccc4", "#2b8cbe", "#08589e"]
+          },
+          "title": "CO2 Emissions (kt)"
+        },
+        "tooltip": [
+          {"field": "properties.name", "type": "nominal", "title": "State"},
+          {"field": "CO2 Emissions", "type": "quantitative", "title": "Emissions (kt)"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "color": "black",
+        "fontSize": 10, 
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "text": {"field": "properties.name", "type": "nominal"},
+        "longitude": {"field": "properties.longitude", "type": "quantitative"},
+        "latitude": {"field": "properties.latitude", "type": "quantitative"}
+      }
+    }
+  ]
+}

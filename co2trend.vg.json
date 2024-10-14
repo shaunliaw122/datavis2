@@ -1,0 +1,154 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A line chart showing aggregated CO2 emission trends over time for selected Australian states, with tooltips and text annotations.",
+  "title": {
+    "text": "Aggregated CO2 Emission Trends by State",
+    "fontSize": 14,
+    "anchor": "middle"
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/shaunliaw122/datavis2/refs/heads/main/final2.csv",
+    "format": {"type": "csv"}
+  },
+  "params": [
+    {
+      "name": "state_selection",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "ACT",
+          "NSW",
+          "NT",
+          "QLD",
+          "SA",
+          "TAS",
+          "VIC",
+          "WA"
+        ],
+        "name": "State: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "state_selection == 'All' || datum.State == state_selection"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "Emissions",
+          "as": "Total_CO2_Emissions"
+        }
+      ],
+      "groupby": ["Year", "State"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "title": "Year"
+        },
+        "y": {
+          "field": "Total_CO2_Emissions",
+          "type": "quantitative",
+          "title": "Total CO2 Emissions (kt)",
+          "axis": {
+            "format": "s",
+            "titlePadding": 10
+          }
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "legend": {
+            "title": "State"
+          },
+          "scale": {
+            "range": [
+              "#1f77b4",  
+              "#ff7f0e",  
+              "#2ca02c",  
+              "#d62728",  
+              "#9467bd",  
+              "#8c564b",  
+              "#e377c2",  
+              "#7f7f7f"   
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Year",
+            "type": "temporal",
+            "title": "Year"
+          },
+          {
+            "field": "Total_CO2_Emissions",
+            "type": "quantitative",
+            "title": "Total CO2 Emissions (kt)",
+            "format": ","
+          },
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          }
+        ]
+      },
+      "width": 850,
+      "height": 500
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 5,
+        "dy": -5,
+        "fontSize": 11,
+        "fontStyle": "italic"
+      },
+      "transform": [
+        {
+          "filter": "year(datum.Year) == 2022"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "temporal"
+        },
+        "y": {
+          "field": "Total_CO2_Emissions",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "State"
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "scale": {
+            "range": [
+              "#1f77b4",  
+              "#ff7f0e",  
+              "#2ca02c",  
+              "#d62728",  
+              "#9467bd",  
+              "#8c564b",  
+              "#e377c2",  
+              "#7f7f7f"   
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

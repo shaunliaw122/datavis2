@@ -1,0 +1,99 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    font-family: 'Helvetica', sans-serif;
+    color: #333;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: 600;
+    color: #005f73; /* Dark Teal for heading */
+    text-align: center;
+    margin-top: 30px;
+}
+
+h2 {
+    font-size: 1.8em;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #0a9396; /* Teal for subtitles */
+}
+
+p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    text-align: center;
+    color: #555;
+}
+
+.vis-container {
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px; /* Adds rounded corners */
+    background-color: #e9f5f5; /* Soft teal background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for elevation */
+}
+
+.pure-g {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.pure-u-1, .pure-u-1-2 {
+    padding: 0 10px; /* Adds padding between elements */
+}
+
+footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: #94d2bd; /* Light green for footer */
+    padding: 20px 0;
+    background-color: #005f73; /* Dark teal for footer background */
+    margin-top: 30px;
+}
+
+.vis-container:hover {
+    border-color: #0a9396; /* Changes border color on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Adds depth on hover */
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: #94d2bd; /* Light green for underlining subtitles */
+    margin: 8px auto 0 auto; /* Adds a small bar below each subtitle */
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    p {
+        font-size: 1em;
+    }
+
+    .pure-u-1-2 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .vis-container {
+        margin: 15px 0;
+    }
+}
